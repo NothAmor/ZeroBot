@@ -2,3 +2,16 @@ sys:
   env: "prod"
   port: 8081
   version: "v1.0.0"
+plugins:
+  dir: "plugins"
+notify:
+  enable: true
+  use: ["server-chan", "email"]
+  server-chan:
+    key: "SCUxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  email:
+    host: "smtp.163.com"
+    account: ""
+    password: ""
+    port: 465
+    receivers: []

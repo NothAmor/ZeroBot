@@ -5,6 +5,7 @@ import (
 
 	"github.com/NothAmor/ZeroBot/core/common"
 	"github.com/NothAmor/ZeroBot/core/initialization"
+	"github.com/NothAmor/ZeroBot/plugins/help"
 	"github.com/spf13/cast"
 )
 
@@ -14,6 +15,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// 注册插件
+	initialization.ZeroBotRegisterPlugins(
+		&help.Help{}, // 帮助插件
+	)
 
 	// panic recover
 	defer recovery()

@@ -9,29 +9,18 @@ import (
 
 // HandleWebSocket 处理 WebSocket 连接
 func HandleWebSocket(c *gin.Context, conn *websocket.Conn) (err error) {
-	closeNotify := c.Writer.CloseNotify()
-
-	safe.Go(HandleMsg(conn, closeNotify))
-	return
-}
-
-// HandleMsg 处理 WebSocket 消息
-func HandleMsg(conn *websocket.Conn, closeNotify <-chan bool) func() {
-	return func() {
-		defer conn.Close()
-
-		select {
-		case <-closeNotify:
-			common.Log.Debug("WebSocket closed")
+	var (
+		wsMsg []byte
+	)
+	for {
+		// 读取 WebSocket 消息
+		_, wsMsg, err = conn.ReadMessage()
+		if err != nil {
+			common.Log.Errorf("Failed to read message from WebSocket: %v", err)
 			return
-		default:
-			_, msg, err := conn.ReadMessage()
-			if err != nil {
-				common.Log.Errorf("Failed to read message from WebSocket: %v", err)
-				return
-			}
-
-			common.Log.Debugf("Received message from WebSocket: %s", msg)
 		}
+
+		// 异步处理消息
+		safe.Go(HandleMsg(conn, wsMsg))
 	}
 }

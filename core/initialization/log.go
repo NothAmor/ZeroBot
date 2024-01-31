@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/NothAmor/ZeroBot/core/common"
+	loghook "github.com/NothAmor/ZeroBot/core/utils/logHook"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,6 +26,9 @@ func initLog() (err error) {
 
 	// 设置日志格式
 	common.Log.SetFormatter(&logrus.JSONFormatter{})
+
+	// 在日志中显示函数名和行号
+	common.Log.AddHook(&loghook.LineHook{})
 
 	return
 }

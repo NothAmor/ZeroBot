@@ -8,6 +8,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// 启动ZeroBot框架
 func ZeroBotStart() {
 	if err := common.Web.Run(fmt.Sprintf(":%d", common.Config.System.Port)); err != nil {
 		panic(err)

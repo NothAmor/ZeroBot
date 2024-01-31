@@ -23,7 +23,7 @@ func initGin() (err error) {
 
 // gin router
 func initGinRouter() {
-	common.Web.GET("/ws", handler.WsHandler)
+	common.Web.GET("/", handler.WsHandler)
 	common.Web.GET("/health", handler.Health)
 }
 
