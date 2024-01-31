@@ -35,6 +35,18 @@ func HandleMsg(conn *websocket.Conn, msg []byte) func() {
 			MetaEventHandler(&commonMsg, msg)
 
 		default:
+			// 有可能是消息发送响应, 不是的话则是未知消息
+			var messageResp proto.MessageSentResp
+			err = json.Unmarshal(msg, &messageResp)
+			if err != nil {
+				common.Log.Errorf("Failed to unmarshal message: %v", err)
+				return
+			}
+
+			if messageResp.Data.MessageID != 0 {
+				return
+			}
+
 			common.Log.Errorf("Unknown message type: %s", msg)
 			return
 		}

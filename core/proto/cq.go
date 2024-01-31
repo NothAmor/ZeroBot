@@ -40,6 +40,16 @@ type (
 	}
 )
 
+// cq-http 发送消息响应
+type MessageSentResp struct {
+	Data struct {
+		MessageID int `json:"message_id"`
+	} `json:"data"`
+	Message string `json:"message"`
+	Retcode int    `json:"retcode"`
+	Status  string `json:"status"`
+}
+
 // 元事件类型
 type MetaEvent struct {
 	MetaEventType string `json:"meta_event_type"`

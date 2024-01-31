@@ -2,7 +2,6 @@ package qq
 
 import (
 	"encoding/json"
-	"log"
 
 	"github.com/NothAmor/ZeroBot/core/common"
 	"github.com/NothAmor/ZeroBot/core/proto"
@@ -50,12 +49,16 @@ func SendGroupMessage(conn *websocket.Conn, groupID int64, message string) (err 
 func send(conn *websocket.Conn, data interface{}) (err error) {
 	replyJSON, err := json.Marshal(data)
 	if err != nil {
-		log.Fatal("Failed to marshal reply message:", err)
+		common.Log.Errorf("Failed to marshal message: %v", err)
+		return
 	}
 
 	err = conn.WriteMessage(websocket.TextMessage, replyJSON)
 	if err != nil {
-		log.Fatal("Failed to send reply message:", err)
+		common.Log.Errorf("Failed to send message: %v", err)
+		return
 	}
+
+	common.Log.Infof("Sent message: %s", replyJSON)
 	return
 }
