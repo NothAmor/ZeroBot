@@ -8,6 +8,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+func ZeroBotStart() {
+	if err := common.Web.Run(fmt.Sprintf(":%d", common.Config.System.Port)); err != nil {
+		panic(err)
+	}
+}
+
 // 初始化ZeroBot框架
 func ZeroBotInit() (err error) {
 	// 初始化日志
@@ -35,6 +41,7 @@ func ZeroBotInit() (err error) {
 	if err != nil {
 		return
 	}
+
 	return
 }
 

@@ -17,6 +17,9 @@ func main() {
 
 	// panic recover
 	defer recovery()
+
+	// 启动ZeroBot框架
+	initialization.ZeroBotStart()
 }
 
 func recovery() {

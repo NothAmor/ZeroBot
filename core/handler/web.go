@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/NothAmor/ZeroBot/core/common"
 	"github.com/NothAmor/ZeroBot/core/logic"
-	"github.com/NothAmor/ZeroBot/core/utils/safe"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -13,16 +12,16 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
+	err error
 )
 
 func WsHandler(c *gin.Context) {
-
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		return
 	}
 
-	safe.Go(logic.HandleWebSocket(conn))
+	logic.HandleWebSocket(c, conn)
 }
 
 func Health(c *gin.Context) {
