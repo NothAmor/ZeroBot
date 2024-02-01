@@ -5,11 +5,10 @@ import (
 
 	"github.com/NothAmor/ZeroBot/core/common"
 	"github.com/NothAmor/ZeroBot/core/proto"
-	"github.com/gorilla/websocket"
 )
 
 // HandleMsg 处理消息
-func HandleMsg(conn *websocket.Conn, msg []byte) func() {
+func HandleMsg(msg []byte) func() {
 	return func() {
 		// 通用消息
 		var commonMsg proto.CommonMsg
@@ -23,7 +22,7 @@ func HandleMsg(conn *websocket.Conn, msg []byte) func() {
 		switch commonMsg.PostType {
 		case proto.PostTypeMessage:
 			// 消息
-			MsgHandler(conn, &commonMsg, msg)
+			MsgHandler(&commonMsg, msg)
 		case proto.PostTypeMessageSent:
 			// 消息发送
 		case proto.PostTypeMessageRequest:

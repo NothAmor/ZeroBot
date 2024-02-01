@@ -6,7 +6,8 @@ import "github.com/NothAmor/ZeroBot/core/common"
 func ZeroBotRegisterPlugins(plugin ...common.Accessor) {
 	for _, plugin := range plugin {
 		plugin.Init()
-		common.Log.Infof("插件: [%s] 已加载", plugin.GetName())
+		pluginInfo := plugin.GetPluginInfo()
+		common.Log.Infof("插件: [%s] 已加载", pluginInfo.Name)
 		common.Plugins = append(common.Plugins, plugin)
 	}
 }

@@ -10,6 +10,11 @@ import (
 
 // 启动ZeroBot框架
 func ZeroBotStart() {
+
+	// 启动定时任务
+	common.Cron.Start()
+
+	// 启动Gin Web
 	if err := common.Web.Run(fmt.Sprintf(":%d", common.Config.System.Port)); err != nil {
 		panic(err)
 	}
@@ -31,6 +36,9 @@ func ZeroBotInit() (err error) {
 
 	// 初始化全局变量
 	initCommonVar()
+
+	// 初始化定时任务
+	initCron()
 
 	fmt.Println(common.LOGO)
 	fmt.Printf("ZeroBot %s\n", common.VERSION)

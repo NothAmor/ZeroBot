@@ -9,7 +9,12 @@ import (
 )
 
 // SendPrivateMessage 发送私聊消息
-func SendPrivateMessage(conn *websocket.Conn, userID int64, message string) (err error) {
+func SendPrivateMessage(userID int64, message string) (err error) {
+	if common.Conn == nil {
+		common.Log.Error("Connection is nil")
+		return
+	}
+
 	reply := proto.MessageTemplate{
 		Action: proto.SendPrivateMessageAction,
 		Params: proto.Params{
@@ -18,7 +23,7 @@ func SendPrivateMessage(conn *websocket.Conn, userID int64, message string) (err
 		},
 	}
 
-	err = send(conn, reply)
+	err = send(reply)
 	if err != nil {
 		common.Log.Errorf("Failed to send private message: %v", err)
 		return
@@ -28,7 +33,12 @@ func SendPrivateMessage(conn *websocket.Conn, userID int64, message string) (err
 }
 
 // SendGroupMessage 发送群消息
-func SendGroupMessage(conn *websocket.Conn, groupID int64, message string) (err error) {
+func SendGroupMessage(groupID int64, message string) (err error) {
+	if common.Conn == nil {
+		common.Log.Error("Connection is nil")
+		return
+	}
+
 	reply := proto.MessageTemplate{
 		Action: proto.SendGroupMessageAction,
 		Params: proto.Params{
@@ -37,7 +47,7 @@ func SendGroupMessage(conn *websocket.Conn, groupID int64, message string) (err 
 		},
 	}
 
-	err = send(conn, reply)
+	err = send(reply)
 	if err != nil {
 		common.Log.Errorf("Failed to send group message: %v", err)
 		return
@@ -46,19 +56,25 @@ func SendGroupMessage(conn *websocket.Conn, groupID int64, message string) (err 
 	return
 }
 
-func send(conn *websocket.Conn, data interface{}) (err error) {
+func send(data interface{}) (err error) {
+	if common.Conn == nil {
+		common.Log.Error("Connection is nil")
+		return
+	}
+
 	replyJSON, err := json.Marshal(data)
 	if err != nil {
 		common.Log.Errorf("Failed to marshal message: %v", err)
 		return
 	}
 
-	err = conn.WriteMessage(websocket.TextMessage, replyJSON)
+	common.Log.Infof("Sending message: [%s]", replyJSON)
+
+	err = common.Conn.WriteMessage(websocket.TextMessage, replyJSON)
 	if err != nil {
 		common.Log.Errorf("Failed to send message: %v", err)
 		return
 	}
 
-	common.Log.Infof("Sent message: %s", replyJSON)
 	return
 }

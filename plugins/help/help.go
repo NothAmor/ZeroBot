@@ -7,7 +7,6 @@ import (
 	"github.com/NothAmor/ZeroBot/core/common"
 	"github.com/NothAmor/ZeroBot/core/proto"
 	"github.com/NothAmor/ZeroBot/core/utils/qq"
-	"github.com/gorilla/websocket"
 )
 
 // Help 帮助插件
@@ -19,29 +18,15 @@ type Help struct {
 	Rule        string // 插件规则
 }
 
-// GetName 插件名称
-func (h *Help) GetName() string {
-	return h.Name
-}
-
-// GetDescription 插件描述
-func (h *Help) GetDescription() string {
-	return h.Description
-}
-
-// GetUsage 插件用法
-func (h *Help) GetUsage() string {
-	return h.Usage
-}
-
-// GetUsageType 插件用法类型
-func (h *Help) GetUsageType() string {
-	return h.UsageType
-}
-
-// GetRule 插件规则
-func (h *Help) GetRule() string {
-	return h.Rule
+// GetPluginInfo 插件信息
+func (h *Help) GetPluginInfo() *common.PluginInfo {
+	return &common.PluginInfo{
+		Name:        h.Name,
+		Description: h.Description,
+		Usage:       h.Usage,
+		UsageType:   h.UsageType,
+		Rule:        h.Rule,
+	}
 }
 
 // Init 初始化
@@ -69,7 +54,7 @@ func (h *Help) Matcher(rule, msg string) bool {
 }
 
 // Handle 处理器
-func (h *Help) Handle(conn *websocket.Conn, msg string) {
+func (h *Help) Handle(msg string) {
 	var privateMsg proto.Message
 	err := json.Unmarshal([]byte(msg), &privateMsg)
 	if err != nil {
@@ -77,12 +62,6 @@ func (h *Help) Handle(conn *websocket.Conn, msg string) {
 		return
 	}
 
-	common.Log.Infof("Received private message: %s", privateMsg.RawMessage)
-
 	helpContent := `你好, 我是ZeroBot, 一个基于Go语言的QQ机器人框架。`
-	err = qq.SendPrivateMessage(conn, privateMsg.Sender.UserID, helpContent)
-	if err != nil {
-		common.Log.Errorf("Failed to send private message: %v", err)
-		return
-	}
+	qq.SendPrivateMessage(privateMsg.Sender.UserID, helpContent)
 }

@@ -26,7 +26,8 @@ func WsHandler(c *gin.Context) {
 		return
 	}
 
-	logic.HandleWebSocket(c, conn)
+	common.Conn = conn
+	logic.HandleWebSocket(c)
 }
 
 // Health 健康检查
