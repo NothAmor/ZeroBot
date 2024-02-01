@@ -81,57 +81,31 @@ type LifecycleMetaEvent struct {
 	SubType string `json:"sub_type"` // 生命周期子类型, 有 enable(启用), disable(停用), connect(连接)
 }
 
+// 发送人信息
+type Sender struct {
+	Age      int     `json:"age"`      // 年龄
+	Area     *string `json:"area"`     // 地区
+	Card     *string `json:"card"`     // 群名片
+	Level    *string `json:"level"`    // 等级
+	Nickname string  `json:"nickname"` // 昵称
+	Role     *string `json:"role"`     // 角色
+	Sex      string  `json:"sex"`      // 性别
+	Title    *string `json:"title"`    // 头衔
+	UserID   int64   `json:"user_id"`  // QQ号
+}
+
 // 消息
 // {"post_type":"message","message_type":"private","time":1706691414,"self_id":3626129355,"sub_type":"friend","sender":{"age":0,"nickname":"空虚公子","sex":"unknown","user_id":1565481748},"message_id":15217893,"user_id":1565481748,"target_id":3626129355,"message":[{"type":"text","data":{"text":"你好呀"}}],"raw_message":"你好呀","font":0}
 type Message struct {
-	MessageType string `json:"message_type"` // 消息类型(private, group)
-	SubType     string `json:"sub_type"`     // 消息子类型(group, public)
-	Message     []struct {
-		Type string `json:"type"` // 消息类型(text, at)
-		Data struct {
-			Text string `json:"text"` // 消息内容
-		} `json:"data"`
-	} `json:"message"`
-	RawMessage string `json:"raw_message"` // CQ 码格式的消息
-	Font       int    `json:"font"`        // 字体(0)
-	Sender     struct {
-		Age      int    `json:"age"`      // 年龄
-		Nickname string `json:"nickname"` // 昵称
-		Sex      string `json:"sex"`      // 性别
-		UserID   int64  `json:"user_id"`  // QQ号
-	} `json:"sender"` // 发送者信息
-	MessageID int   `json:"message_id"` // 消息ID
-	UserID    int64 `json:"user_id"`    // 发送者QQ号
-}
-
-// 群聊消息
-// {"post_type":"message","message_type":"group","time":1706691147,"self_id":3626129355,"sub_type":"normal","font":0,"message_seq":836243,"raw_message":"[CQ:face,id=181,type=sticker]","message_id":814208354,"anonymous":null,"group_id":965498314,"message":[{"type":"face","data":{"id":"181","type":"sticker"}}],"sender":{"age":0,"area":"","card":"","level":"","nickname":"你的饺子皮真臭","role":"member","sex":"unknown","title":"","user_id":2563187231},"user_id":2563187231}
-type GroupMessage struct {
-	MessageType string      `json:"message_type"` // 消息类型
-	SubType     string      `json:"sub_type"`     // 消息子类型
-	Font        int         `json:"font"`         // 字体
-	MessageSeq  int         `json:"message_seq"`  //
-	RawMessage  string      `json:"raw_message"`  // CQ 码格式的消息
-	MessageID   int         `json:"message_id"`   // 消息ID
-	Anonymous   interface{} `json:"anonymous"`    // 匿名信息(id匿名用户 ID, name匿名用户名称, flag匿名用户 flag, 在调用禁言 API 时需要传入)
-	GroupID     int         `json:"group_id"`     // 群号
-	Message     []struct {
-		Type string `json:"type"`
-		Data struct {
-			ID   string `json:"id"` // 消息ID
-			Type string `json:"type"`
-		} `json:"data"`
-	} `json:"message"`
-	Sender struct {
-		Age      int    `json:"age"`      // 年龄
-		Area     string `json:"area"`     // 地区
-		Card     string `json:"card"`     // 群名片
-		Level    string `json:"level"`    // 等级
-		Nickname string `json:"nickname"` // 昵称
-		Role     string `json:"role"`     // 角色
-		Sex      string `json:"sex"`      // 性别
-		Title    string `json:"title"`    // 头衔
-		UserID   int64  `json:"user_id"`  // QQ号
-	} `json:"sender"`
-	UserID int64 `json:"user_id"` // 发送者QQ号
+	MessageType string        `json:"message_type"` // 消息类型(private, group)
+	SubType     string        `json:"sub_type"`     // 消息子类型(group, public)
+	Message     []MessageData `json:"message"`      //
+	RawMessage  string        `json:"raw_message"`  // CQ 码格式的消息
+	Font        int           `json:"font"`         // 字体(0)
+	Sender      Sender        `json:"sender"`       // 发送者信息
+	MessageID   int           `json:"message_id"`   // 消息ID
+	UserID      *int64        `json:"user_id"`      // 发送者QQ号
+	GroupID     *int64        `json:"group_id"`     // 群号
+	MessageSeq  int           `json:"message_seq"`  //
+	Anonymous   interface{}   `json:"anonymous"`    // 匿名信息(id匿名用户 ID, name匿名用户名称, flag匿名用户 flag, 在调用禁言 API 时需要传入)
 }

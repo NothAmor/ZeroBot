@@ -56,7 +56,7 @@ func LifeCycleHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 	case "disable":
 		common.Log.Infof("ZeroBot disabled")
 	case "connect":
-		common.Log.Infof("cq-http connected")
+		common.Log.Infof("cq-http 已连接")
 	default:
 		common.Log.Errorf("Unknown lifecycle meta event subtype: %s", lifeCycle.SubType)
 		return

@@ -68,7 +68,7 @@ func send(data interface{}) (err error) {
 		return
 	}
 
-	common.Log.Infof("Sending message: [%s]", replyJSON)
+	common.Log.Infof("发送消息: [%s]", replyJSON)
 
 	err = common.Conn.WriteMessage(websocket.TextMessage, replyJSON)
 	if err != nil {

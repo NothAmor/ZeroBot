@@ -12,6 +12,7 @@ func HandleMsg(msg []byte) func() {
 	return func() {
 		// 通用消息
 		var commonMsg proto.CommonMsg
+		var rcvMsg proto.Msg
 
 		err := json.Unmarshal(msg, &commonMsg)
 		if err != nil {
@@ -19,10 +20,12 @@ func HandleMsg(msg []byte) func() {
 			return
 		}
 
+		rcvMsg.PostType = commonMsg.PostType
+
 		switch commonMsg.PostType {
 		case proto.PostTypeMessage:
 			// 消息
-			MsgHandler(&commonMsg, msg)
+			MsgHandler(&rcvMsg, &commonMsg, msg)
 		case proto.PostTypeMessageSent:
 			// 消息发送
 		case proto.PostTypeMessageRequest:

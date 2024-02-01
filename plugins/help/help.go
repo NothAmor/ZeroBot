@@ -1,9 +1,6 @@
 package help
 
 import (
-	"encoding/json"
-	"strings"
-
 	"github.com/NothAmor/ZeroBot/core/common"
 	"github.com/NothAmor/ZeroBot/core/proto"
 	"github.com/NothAmor/ZeroBot/core/utils/qq"
@@ -40,28 +37,14 @@ func (h *Help) Init() {
 
 // Matcher 匹配器
 func (h *Help) Matcher(rule, msg string) bool {
-	var privateMsg proto.Message
-	err := json.Unmarshal([]byte(msg), &privateMsg)
-	if err != nil {
-		common.Log.Errorf("Failed to unmarshal private message: %v", err)
-		return false
-	}
-
-	if (strings.HasPrefix(privateMsg.RawMessage, "帮助") || strings.HasPrefix(privateMsg.RawMessage, "help")) && rule == "private" {
+	if (rule == "private" || rule == "group") && (msg == "help" || msg == "帮助") {
 		return true
 	}
 	return false
 }
 
 // Handle 处理器
-func (h *Help) Handle(msg string) {
-	var privateMsg proto.Message
-	err := json.Unmarshal([]byte(msg), &privateMsg)
-	if err != nil {
-		common.Log.Errorf("Failed to unmarshal private message: %v", err)
-		return
-	}
-
+func (h *Help) Handle(msg *proto.Msg) {
 	helpContent := `你好, 我是ZeroBot, 一个基于Go语言的QQ机器人框架。`
-	qq.SendPrivateMessage(privateMsg.Sender.UserID, helpContent)
+	qq.ReplyText(msg, helpContent)
 }

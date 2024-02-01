@@ -40,16 +40,16 @@ func ZeroBotInit() (err error) {
 	// 初始化定时任务
 	initCron()
 
-	fmt.Println(common.LOGO)
-	fmt.Printf("ZeroBot %s\n", common.VERSION)
-	fmt.Println("ZeroBot框架初始化完成")
-	fmt.Println("欢迎使用ZeroBot框架")
-
 	// 初始化Gin Web
 	err = initGin()
 	if err != nil {
 		return
 	}
+
+	fmt.Println(common.LOGO)
+	fmt.Printf("ZeroBot %s\n", common.VERSION)
+	fmt.Println("ZeroBot框架初始化完成")
+	fmt.Println("欢迎使用ZeroBot框架")
 
 	return
 }

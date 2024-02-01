@@ -8,7 +8,7 @@ import (
 )
 
 // MsgHandler 处理消息
-func MsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
+func MsgHandler(rcvMsg *proto.Msg, commonMsg *proto.CommonMsg, msg []byte) (err error) {
 	// 获取消息类型
 	var msgContent proto.Message
 
@@ -18,14 +18,18 @@ func MsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 		return
 	}
 
+	rcvMsg.MessageType = msgContent.MessageType
+	rcvMsg.Sender = msgContent.Sender
+	rcvMsg.RawMessage = msgContent.RawMessage
+
 	switch msgContent.MessageType {
 	case "private":
 		// 私聊消息
-		PrivateMsgHandler(commonMsg, msg)
+		PrivateMsgHandler(rcvMsg, commonMsg, msg)
 
 	case "group":
 		// 群消息
-		GroupMsgHandler(commonMsg, msg)
+		GroupMsgHandler(rcvMsg, commonMsg, msg)
 
 	default:
 		common.Log.Errorf("Unknown message type: %s", msgContent.MessageType)
@@ -36,7 +40,7 @@ func MsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 }
 
 // PrivateMsgHandler 处理私聊消息
-func PrivateMsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
+func PrivateMsgHandler(rcvMsg *proto.Msg, commonMsg *proto.CommonMsg, msg []byte) (err error) {
 	var privateMsg proto.Message
 
 	err = json.Unmarshal(msg, &privateMsg)
@@ -45,14 +49,16 @@ func PrivateMsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 		return
 	}
 
-	common.Log.Infof("Received private message: %s", privateMsg.Message)
+	rcvMsg.UserID = privateMsg.UserID
+	rcvMsg.Message = privateMsg.Message
+	common.Log.Infof("收到私聊消息, 发送人: [%d], 消息内容: [%s]", privateMsg.UserID, privateMsg.RawMessage)
 
-	PluginHandler(privateMsg.MessageType, msg)
+	PluginHandler(rcvMsg)
 	return
 }
 
 // GroupMsgHandler 处理群消息
-func GroupMsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
+func GroupMsgHandler(rcvMsg *proto.Msg, commonMsg *proto.CommonMsg, msg []byte) (err error) {
 	var groupMsg proto.Message
 
 	err = json.Unmarshal(msg, &groupMsg)
@@ -61,8 +67,10 @@ func GroupMsgHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 		return
 	}
 
-	common.Log.Infof("Received group message: %s", groupMsg.Message)
+	rcvMsg.GroupID = groupMsg.GroupID
+	rcvMsg.Message = groupMsg.Message
+	common.Log.Infof("收到群消息, 群号: [%d], 发送人: [%s(%d)], 消息内容: [%s]", groupMsg.GroupID, groupMsg.Sender.Nickname, groupMsg.Sender.UserID, groupMsg.RawMessage)
 
-	PluginHandler(groupMsg.MessageType, msg)
+	PluginHandler(rcvMsg)
 	return
 }

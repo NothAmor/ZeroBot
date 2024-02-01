@@ -31,6 +31,7 @@ func main() {
 
 	// panic recover
 	defer recovery()
+	common.Log.Infoln("等待cq-http连接...")
 
 	// 启动ZeroBot框架
 	initialization.ZeroBotStart()

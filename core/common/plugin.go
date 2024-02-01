@@ -1,5 +1,7 @@
 package common
 
+import "github.com/NothAmor/ZeroBot/core/proto"
+
 // PluginInfo 插件信息
 type PluginInfo struct {
 	Name        string // 插件名称
@@ -14,5 +16,5 @@ type Accessor interface {
 	GetPluginInfo() *PluginInfo    // 插件信息
 	Init()                         // 初始化
 	Matcher(rule, msg string) bool // 匹配器
-	Handle(msg string)             // 处理器
+	Handle(msg *proto.Msg)         // 处理器
 }
