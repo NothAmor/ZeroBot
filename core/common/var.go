@@ -1,6 +1,7 @@
 package common
 
 import (
+	"github.com/NothAmor/ZeroBot/core/common/plugin"
 	"github.com/NothAmor/ZeroBot/core/proto"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -15,7 +16,7 @@ var (
 	Cron   *cron.Cron      // 定时任务
 	Conn   *websocket.Conn // websocket连接
 
-	Plugins []Accessor // 插件列表
+	Plugins []plugin.Accessor // 插件列表
 )
 
 var VERSION string // 版本号

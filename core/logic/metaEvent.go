@@ -84,14 +84,14 @@ func HeartBeatHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 
 	interval := hbTime.Sub(*lastHeartBeatTime)
 	if interval > 6*time.Second {
-		common.Log.Warnf("Heartbeat interval too long: %v", interval)
+		common.Log.Warnf("心跳间隔过长: %v", interval)
 	}
 
 	lastHeartBeatTime = &hbTime
 
 	// 检查 cq-http 状态
 	if !heartBeat.Status.AppEnabled || !heartBeat.Status.AppGood {
-		common.Log.Warnf("cq-http is not enabled or not good")
+		common.Log.Warnf("cq-http状态异常")
 
 		if !common.Config.Notify.Enable {
 			return
@@ -105,7 +105,7 @@ func HeartBeatHandler(commonMsg *proto.CommonMsg, msg []byte) (err error) {
 
 	// 检查 机器人 在线状态
 	if !heartBeat.Status.Online {
-		common.Log.Warnf("cq-http is offline")
+		common.Log.Warnf("cq-http离线")
 
 		if !common.Config.Notify.Enable {
 			return

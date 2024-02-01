@@ -2,8 +2,14 @@ sys:
   env: "prod"
   port: 8081
   version: "v1.0.0"
+bot:
+  qq: 3626129355
+  name: "ZeroBot"
+  age: 18
+  gender: "女"
 plugins:
-  dir: "plugins"
+  command: "/"
+  separator: " "
 notify:
   enable: true
   use: ["server-chan", "email"]

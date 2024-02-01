@@ -69,7 +69,7 @@ func GroupMsgHandler(rcvMsg *proto.Msg, commonMsg *proto.CommonMsg, msg []byte) 
 
 	rcvMsg.GroupID = groupMsg.GroupID
 	rcvMsg.Message = groupMsg.Message
-	common.Log.Infof("收到群消息, 群号: [%d], 发送人: [%s(%d)], 消息内容: [%s]", groupMsg.GroupID, groupMsg.Sender.Nickname, groupMsg.Sender.UserID, groupMsg.RawMessage)
+	common.Log.Infof("收到群消息, 群号: [%d], 发送人: [%s(%d)], 消息内容: [%s]", *rcvMsg.GroupID, groupMsg.Sender.Nickname, groupMsg.Sender.UserID, groupMsg.RawMessage)
 
 	PluginHandler(rcvMsg)
 	return

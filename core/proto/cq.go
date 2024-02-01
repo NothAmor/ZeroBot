@@ -23,6 +23,11 @@ type CommonMsg struct {
 }
 
 const (
+	MessageTypePrivate = "private" // 私聊消息
+	MessageTypeGroup   = "group"   // 群消息
+)
+
+const (
 	SendPrivateMessageAction = "send_private_msg" // 发送私聊消息
 	SendGroupMessageAction   = "send_group_msg"   // 发送群消息
 )
@@ -92,6 +97,16 @@ type Sender struct {
 	Sex      string  `json:"sex"`      // 性别
 	Title    *string `json:"title"`    // 头衔
 	UserID   int64   `json:"user_id"`  // QQ号
+}
+
+// 消息数据
+type MessageData struct {
+	Type string `json:"type"`
+	Data struct {
+		ID   string `json:"id"`   // 消息ID
+		Type string `json:"type"` // 消息类型
+		Text string `json:"text"` // 消息内容
+	} `json:"data"`
 }
 
 // 消息

@@ -8,7 +8,6 @@ import (
 	"github.com/NothAmor/ZeroBot/core/proto"
 	"github.com/NothAmor/ZeroBot/core/utils/notify"
 	"github.com/NothAmor/ZeroBot/plugins"
-	"github.com/NothAmor/ZeroBot/plugins/help"
 	"github.com/spf13/cast"
 )
 
@@ -21,12 +20,14 @@ func main() {
 
 	// 注册插件
 	initialization.ZeroBotRegisterPlugins(
-		&help.Help{}, // 帮助插件
+		&plugins.Help{}, // 帮助插件
+		&plugins.Roll{}, // Roll
+		&plugins.QR{},   // 二维码生成
 	)
 
 	// 注册定时任务
 	initialization.ZeroBotRegisterCron(
-		&proto.CronTask{Name: "早上好", Spec: "02 11 * * *", Func: plugins.Morning}, // 早上好
+		&proto.CronTask{Name: "早上好", Spec: "0 8 * * *", Func: plugins.Morning}, // 早上好
 	)
 
 	// panic recover

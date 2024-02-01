@@ -1,14 +1,5 @@
 package proto
 
-type MessageData struct {
-	Type string `json:"type"`
-	Data struct {
-		ID   string `json:"id"`   // 消息ID
-		Type string `json:"type"` // 消息类型
-		Text string `json:"text"` // 消息内容
-	} `json:"data"`
-}
-
 // Msg 消息
 type Msg struct {
 	PostType    string        `json:"post_type"`    // 请求类型

@@ -12,7 +12,18 @@ type (
 // ZeroBot插件配置
 type (
 	Plugins struct {
-		Dir string `yaml:"dir"` // 插件目录
+		Command   string `yaml:"command"`   // 命令前缀
+		Separator string `yaml:"separator"` // 命令分隔符
+	}
+)
+
+// 机器人配置
+type (
+	Bot struct {
+		QQ     int64  `yaml:"qq"`     // QQ号
+		Name   string `yaml:"name"`   // 名字
+		Age    int    `yaml:"age"`    // 年龄
+		Gender string `yaml:"gender"` // 性别
 	}
 )
 
@@ -39,6 +50,7 @@ type (
 // ZeroBot框架配置
 type Config struct {
 	System  System  `yaml:"sys"`     // 系统配置
+	Bot     Bot     `yaml:"bot"`     // 机器人配置
 	Plugins Plugins `yaml:"plugins"` // 插件配置
 	Notify  Notify  `yaml:"notify"`  // 通知配置
 }

@@ -1,4 +1,4 @@
-package common
+package plugin
 
 import "github.com/NothAmor/ZeroBot/core/proto"
 
@@ -13,8 +13,7 @@ type PluginInfo struct {
 
 // Accessor 插件接口
 type Accessor interface {
-	GetPluginInfo() *PluginInfo    // 插件信息
-	Init()                         // 初始化
-	Matcher(rule, msg string) bool // 匹配器
-	Handle(msg *proto.Msg)         // 处理器
+	GetPluginInfo() *PluginInfo           // 插件信息
+	Init()                                // 初始化
+	Handle(msg *proto.Msg, args []string) // 处理器
 }
