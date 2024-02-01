@@ -1,5 +1,5 @@
 # ZeroBot
-ZeroBot是一款基于Go语言开发的QQ机器人框架，目前支持与cq-http的对接。
+ZeroBot是一款基于Go语言开发的QQ机器人框架，支持与cq-http的对接。
 
 ## 使用方法
 ```shell
